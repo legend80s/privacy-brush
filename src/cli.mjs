@@ -123,7 +123,7 @@ Usage: pnpx privacy-brush [options]
 
 Options:
   --mask, -m                Character to use for masking (default: "█")
-  --preserve-first, -p   Whether to preserve the first part of version numbers (default: true, \`--no-preserve-first\` to false)
+  --preserve-first, -p      Whether to preserve the first part of version numbers (default: true, \`--no-preserve-first\` to false)
   --help, -h                Show this help message (default: false)
   --verbose                 Enable verbose output (default: false)
   --version, -v             Show version information (default: false)
