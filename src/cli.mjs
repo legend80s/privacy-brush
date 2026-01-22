@@ -63,17 +63,19 @@ async function main() {
     await printHelp()
 
     process.exit(1)
+    return
   }
 
   const { values } = result
 
   if (values.help) {
     await printHelp()
-    process.exit(0)
+    return
   }
 
   if (values.version) {
     await printVersion()
+    return
   }
 
   // console.log("values:", values)
