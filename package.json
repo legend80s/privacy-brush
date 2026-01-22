@@ -4,6 +4,7 @@
   "description": "Automatically  mask sensitive information in terminal outputs and logs. Keep your data safe when sharing.",
   "main": "src/index.mjs",
   "module": "src/index.mjs",
+  "bin": "src/cli.mjs",
   "scripts": {
     "test": "node --test",
     "typecheck": "tsgo --noEmit"

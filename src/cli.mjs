@@ -1,3 +1,4 @@
+import { parseArgs } from "node:util"
 import { ProductionTerminalMasker } from "./index.mjs"
 
 // 流式处理：将 stdin 通过 masker 的 Transform 流处理后输出到 stdout
@@ -9,7 +10,54 @@ import { ProductionTerminalMasker } from "./index.mjs"
 // Example 4: ❯ node src/cli.mjs
 // Input: Microsoft Windows [版本 10.0.12345.6785]
 // Output: Microsoft Windows [版本 10.█.█████.████]
-const masker = new ProductionTerminalMasker()
+
+// get config from command line arguments use native `parseArgs`
+// node src/cli.mjs --maskChar X --preserveFirstPart false
+const args = process.argv.slice(2)
+// console.log("args:", args) // args: [ '--maskChar', 'X', '--preserveFirstPart', 'false' ]
+
+const { values } = parseArgs({
+  allowPositionals: true,
+  allowNegative: true,
+
+  args,
+
+  options: {
+    maskChar: {
+      type: "string",
+      short: "m",
+      default: "█",
+    },
+    preserveFirstPart: {
+      type: "boolean",
+      short: "p",
+      default: true,
+    },
+    // help
+    help: {
+      type: "boolean",
+      short: "h",
+    },
+  },
+})
+
+if (values.help) {
+  console.log(`Usage: node src/cli.mjs [options]
+
+Options:
+  --maskChar, -m            Character to use for masking (default: "█")
+  --preserveFirstPart, -p   Whether to preserve the first part of version numbers (default: true, \`--no-preserveFirstPart\` to false)
+  --help, -h                Show this help message
+`)
+  process.exit(0)
+}
+
+// console.log("values:", values)
+// console.log("positionals:", positionals)
+
+const config = values
+
+const masker = new ProductionTerminalMasker(config)
 const maskStream = await masker.createMaskStream()
 
 // 检查 stdin 是否连接到管道（有数据输入）

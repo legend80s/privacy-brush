@@ -139,12 +139,3 @@ troubleshooting tips.
 
 // // 处理日志文件
 // masker.maskFile('terminal_log.txt', 'masked_log.txt');
-
-// // 流式处理
-// const readline = require('readline');
-// const rl = readline.createInterface({
-//   input: process.stdin,
-//   output: masker.createMaskStream()
-// });
-
-// rl.pipe(process.stdout);

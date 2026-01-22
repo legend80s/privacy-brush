@@ -1,5 +1,5 @@
 /**
- * @type {Required<import('../type').IConfig>}
+ * @type {Required<import('../type.js').IConfig>}
  */
 export const defaultConfig = {
   maskChar: "█",
