@@ -77,8 +77,8 @@ Found 4 connected devices:
 ```bash
 ❯ flutter devices | privacy-brush
 Found 4 connected devices:
-  Windows (desktop) • windows • windows-x64 • Microsoft Windows [Version 10.███.███.███]
-  Chrome (web) • chrome • web-javascript • Google Chrome 144.███.███.███
+  Windows (desktop) • windows • windows-x64 • Microsoft Windows [Version 10.█.█████.████]
+  Chrome (web) • chrome • web-javascript • Google Chrome 144.█.████.██
 ```
 
 ### Example 2: Process Node.js Debug Logs
@@ -98,10 +98,10 @@ DEBUG: OS: Windows 10.0.12345
 
 console.log(masker.mask(debugLog));
 // Output:
-// DEBUG: User login from IP ***.***.***.100
+// DEBUG: User login from IP ***.***.*.***
 // DEBUG: Session ID: ************
-// DEBUG: Browser: Chrome/***.***.***.***
-// DEBUG: OS: Windows ***.***.***
+// DEBUG: Browser: Chrome/***.*.***.**
+// DEBUG: OS: Windows **.*.*****
 ```
 
 ## ⚙️ Configuration

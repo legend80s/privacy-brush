@@ -15,9 +15,9 @@ test("❯ echo 'Microsoft Windows [Version 10.0.12345.6785]' | node src/cli.mjs"
   assert.strictEqual(actual, expected)
 })
 
-test("--maskChar", async () => {
+test("--mask", async () => {
   const actual = execSync(
-    'echo Microsoft Windows [Version 10.0.12345.6785] | node src/cli.mjs --maskChar "🔒" --no-preserveFirstPart',
+    'echo Microsoft Windows [Version 10.0.12345.6785] | node src/cli.mjs --mask "🔒" --no-preserve-first',
   ).toString("utf8")
 
   // console.log(`actual:|${actual}|`)

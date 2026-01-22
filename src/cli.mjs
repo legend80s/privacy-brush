@@ -12,11 +12,11 @@ import { PrivacyBrush } from "./index.mjs"
 // Output: Microsoft Windows [版本 10.█.█████.████]
 
 // get config from command line arguments use native `parseArgs`
-// node src/cli.mjs --maskChar X --preserveFirstPart false
+// node src/cli.mjs --mask X --preserve-first false
 const args = process.argv.slice(2)
-// console.log("args:", args) // args: [ '--maskChar', 'X', '--preserveFirstPart', 'false' ]
+// console.log("args:", args) // args: [ '--mask', 'X', '--preserve-first', 'false' ]
 
-const verbose = args.includes('--verbose')
+const verbose = args.includes("--verbose")
 
 const [err, result] = safeCall(() =>
   parseArgs({
@@ -26,12 +26,12 @@ const [err, result] = safeCall(() =>
     args,
 
     options: {
-      maskChar: {
+      mask: {
         type: "string",
         short: "m",
         default: "█",
       },
-      preserveFirstPart: {
+      "preserve-first": {
         type: "boolean",
         short: "p",
         default: true,
@@ -72,7 +72,10 @@ async function main() {
 
   const config = values
 
-  const masker = new PrivacyBrush(config)
+  const masker = new PrivacyBrush({
+    maskChar: config.mask,
+    preserveFirstPart: config["preserve-first"],
+  })
   const maskStream = await masker.createMaskStream()
 
   // 检查 stdin 是否连接到管道（有数据输入）
@@ -87,15 +90,16 @@ async function main() {
   process.stdin.pipe(maskStream).pipe(process.stdout)
 }
 /**
- *
- * @param {(...args: any[]) => any} fn
- * @returns
+ * @template T
+ * @param {(...args: any[]) => T} fn
+ * @returns {[null, T] | [Error, null]}
  */
 function safeCall(fn) {
   try {
     const result = fn()
     return [null, result]
   } catch (error) {
+    // @ts-expect-error
     return [error, null]
   }
 }
@@ -104,8 +108,8 @@ function printHelp() {
   console.log(`Usage: node src/cli.mjs [options]
 
 Options:
-  --maskChar, -m            Character to use for masking (default: "█")
-  --preserveFirstPart, -p   Whether to preserve the first part of version numbers (default: true, \`--no-preserveFirstPart\` to false)
+  --mask, -m                Character to use for masking (default: "█")
+  --preserve-first, -p   Whether to preserve the first part of version numbers (default: true, \`--no-preserve-first\` to false)
   --help, -h                Show this help message (default: false)
   --verbose                 Enable verbose output (default: false)
 `)
