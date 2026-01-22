@@ -1,4 +1,4 @@
-<h1 align="center">🛡️ PrivacyBrush 🖌️</h1>
+<h1 align="center" title="PrivacyBrush">🛡️ Priv█cyBr█sh 🖌️</h1>
 
 > **Terminal Output Masking Tool | Safely Share Logs by Hiding Sensitive Information**
 
