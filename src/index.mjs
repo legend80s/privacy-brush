@@ -9,6 +9,10 @@ export class ProductionTerminalMasker {
 		this.sensitivePatterns = this.buildPatterns();
 	}
 
+	get maskChar() {
+		return this.config.maskChar;
+	}
+
 	buildPatterns() {
 		return [
 			// 操作系统版本 (Windows 10.0.19045.6456)
@@ -76,14 +80,12 @@ export class ProductionTerminalMasker {
 		const parts = version.split(".");
 
 		if (!this.config.preserveFirstPart) {
-			return parts
-				.map((part) => this.config.maskChar.repeat(part.length))
-				.join(".");
+			return parts.map((part) => this.maskChar.repeat(part.length)).join(".");
 		}
 
 		return parts
 			.map((part, index) => {
-				return index === 0 ? part : this.config.maskChar.repeat(part.length);
+				return index === 0 ? part : this.maskChar.repeat(part.length);
 			})
 			.join(".");
 	}

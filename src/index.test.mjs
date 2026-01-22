@@ -1,4 +1,4 @@
-import { ProductionTerminalMasker } from "../";
+import { ProductionTerminalMasker } from "./index.mjs";
 
 // 使用示例
 const masker = new ProductionTerminalMasker({
