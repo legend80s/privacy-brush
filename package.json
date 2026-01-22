@@ -1,7 +1,7 @@
 {
   "name": "privacy-brush",
   "version": "1.0.0",
-  "description": "",
+  "description": "Automatically  mask sensitive information in terminal outputs and logs. Keep your data safe when sharing.",
   "main": "src/index.mjs",
   "module": "src/index.mjs",
   "scripts": {
