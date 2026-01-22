@@ -150,7 +150,7 @@ User IP: 10.12.123.12`
 
   // console.log("safeOutput3:", safeOutput)
 
-  const expectedOutput = `Windows [Version 10.█.█████.███]
+  const expectedOutput = `Windows [Version 10.█.█████.████]
 Chrome 144.█.████.██
 User IP: 10.██.███.██`
 

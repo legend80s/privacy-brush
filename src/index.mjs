@@ -63,12 +63,7 @@ export class PrivacyBrush {
          * @returns {string}
          */
         replacer: match => {
-          const parts = match.split(".")
-          return parts
-            .map((part, index) =>
-              index < 2 ? part : this.maskChar.repeat(part.length),
-            )
-            .join(".")
+          return this.maskVersion(match)
         },
       },
     ]
