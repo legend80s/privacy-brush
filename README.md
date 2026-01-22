@@ -4,11 +4,9 @@
 
 [![npm version](https://img.shields.io/npm/v/privacy-brush.svg)](https://www.npmjs.com/package/privacy-brush)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/node/v/privacy-brush)](https://nodejs.org)
-[![Downloads](https://img.shields.io/npm/dm/privacy-brush.svg)](https://www.npmjs.com/package/privacy-brush)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/yourusername/privacy-brush/main/docs/demo.gif" alt="Privacy-brush Demo" width="800">
+  <img src="https://raw.githubusercontent.com/legend80s/privacy-brush/main/docs/demo.gif" alt="Privacy-brush Demo" width="800">
 </p>
 
 ## ✨ Features
@@ -306,8 +304,8 @@ MIT License © 2024 Privacy-brush Contributors
 ## 📞 Support
 
 - 📧 Email: <support@privacy-brush.dev>
-- 🐛 [Issue Tracker](https://github.com/yourusername/privacy-brush/issues)
-- 💬 [Discussions](https://github.com/yourusername/privacy-brush/discussions)
+- 🐛 [Issue Tracker](https://github.com/legend80s/privacy-brush/issues)
+- 💬 [Discussions](https://github.com/legend80s/privacy-brush/discussions)
 - 📖 [Documentation](https://privacy-brush.dev/docs)
 
 ---
