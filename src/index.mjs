@@ -90,6 +90,11 @@ export class ProductionTerminalMasker {
 			.join(".");
 	}
 
+	/**
+	 *
+	 * @param {string} text
+	 * @returns
+	 */
 	maskText(text) {
 		let result = text;
 
@@ -100,7 +105,12 @@ export class ProductionTerminalMasker {
 		return result;
 	}
 
-	// 批量处理文件
+	/**
+	 * 批量处理文件
+	 * @param {string} inputPath
+	 * @param {string} outputPath
+	 * @returns
+	 */
 	maskFile(inputPath, outputPath) {
 		try {
 			const fs = require("fs");
