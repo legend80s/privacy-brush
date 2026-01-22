@@ -2,7 +2,7 @@
 
 import { defaultConfig } from "./lib/config.mjs"
 
-export class ProductionTerminalMasker {
+export class PrivacyBrush {
   /**
    * @param {IConfig} [config]
    */

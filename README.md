@@ -1,4 +1,4 @@
-# Privacy-brush 🛡️
+<h1 align="center">PrivacyBrush 🛡️🖌️</h1>
 
 **Terminal Output Masking Tool | Safely Share Logs by Hiding Sensitive Information**
 
@@ -7,7 +7,7 @@
 [![Typecheck](https://github.com/legend80s/privacy-brush/actions/workflows/typecheck.yml/badge.svg?branch=master)](https://github.com/legend80s/privacy-brush/actions/workflows/typecheck.yml)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/legend80s/privacy-brush/main/docs/demo.gif" alt="Privacy-brush Demo" width="800">
+  <img src="https://raw.githubusercontent.com/legend80s/privacy-brush/main/docs/demo.gif" alt="PrivacyBrush Demo" width="800">
 </p>
 
 ## ✨ Features
@@ -20,58 +20,43 @@
 - 🌐 **Multi-language** - Supports English, Chinese, and other log formats
 - 🎨 **Customizable** - Add your own sensitive patterns
 
-## 📦 Installation
-
-```bash
-# Global install (recommended for CLI)
-npm install -g privacy-brush
-
-# Or as dev dependency
-npm install privacy-brush --save-dev
-
-# Using yarn
-yarn add privacy-brush
-
-# Using pnpm
-pnpm add privacy-brush
-```
-
 ## 🚀 Quick Start
 
 ### Basic Usage
 
 ```bash
 # Direct terminal output processing
-flutter devices | privacy-brush
+flutter devices | pnpx privacy-brush
+flutter doctor | pnpx privacy-brush
 
 # Process files
 privacy-brush input.log -o masked.log
 
 # Real-time command output
-some-command --verbose | privacy-brush --live
+echo 'Microsoft Windows [Version 10.0.12345.6785]' | privacy-brush
 ```
 
 ### In Your Node.js Project
 
 ```javascript
-const { Privacy-brush } = require('privacy-brush');
 // Or ES Module
-import { Privacy-brush } from 'privacy-brush';
+import { PrivacyBrush } from 'privacy-brush';
 
 // Create instance
-const masker = new Privacy-brush();
+const brush = new PrivacyBrush();
 
 // Process text
-const sensitiveText = `Windows [Version 10.0.19045.6456]
-Chrome 144.0.7559.60
-User IP: 192.168.1.100`;
+const sensitiveText = `Windows [Version 10.0.12345.1234]
+Chrome 144.0.1234.12
+User IP: 192.123.1.123`;
 
-const safeText = masker.mask(sensitiveText);
+const safeText = brush.maskText(sensitiveText);
 console.log(safeText);
+
 // Output:
-// Windows [Version 10.███.███.███]
-// Chrome 144.███.███.███
-// User IP: 192.168.███.███
+// Windows [Version 10.█.█████.████]
+// Chrome 144.█.████.██
+// User IP: 192.███.█.███
 ```
 
 ## 📖 Examples
@@ -83,11 +68,11 @@ console.log(safeText);
 ```bash
 ❯ flutter devices
 Found 4 connected devices:
-  Windows (desktop) • windows • windows-x64 • Microsoft Windows [Version 10.0.19045.6456]
-  Chrome (web) • chrome • web-javascript • Google Chrome 144.0.7559.60
+  Windows (desktop) • windows • windows-x64 • Microsoft Windows [Version 10.0.12345.1234]
+  Chrome (web) • chrome • web-javascript • Google Chrome 144.0.1234.60
 ```
 
-**After Privacy-brush:**
+**After PrivacyBrush:**
 
 ```bash
 ❯ flutter devices | privacy-brush
@@ -99,7 +84,7 @@ Found 4 connected devices:
 ### Example 2: Process Node.js Debug Logs
 
 ```javascript
-const masker = new Privacy-brush({
+const masker = new PrivacyBrush({
   maskChar: '*',
   preserveFirstPart: false
 });
@@ -107,8 +92,8 @@ const masker = new Privacy-brush({
 const debugLog = `
 DEBUG: User login from IP 192.168.1.100
 DEBUG: Session ID: abc123def456
-DEBUG: Browser: Chrome/144.0.7559.60
-DEBUG: OS: Windows 10.0.19045
+DEBUG: Browser: Chrome/144.0.1234.60
+DEBUG: OS: Windows 10.0.12345
 `;
 
 console.log(masker.mask(debugLog));
@@ -142,7 +127,7 @@ privacy-brush [input-file] [options]
 ### JavaScript API Options
 
 ```javascript
-const masker = new Privacy-brush({
+const masker = new PrivacyBrush({
   // Basic config
   maskChar: '█',           // Mask character
   preserveFirstPart: true, // Keep first part of versions
@@ -181,7 +166,7 @@ const masker = new Privacy-brush({
 
 ## 🔧 Built-in Patterns
 
-Privacy-brush includes 20+ pre-configured sensitive information patterns:
+PrivacyBrush includes 20+ pre-configured sensitive information patterns:
 
 ### 🔐 Personal Information
 
@@ -198,8 +183,8 @@ Privacy-brush includes 20+ pre-configured sensitive information patterns:
 
 ### 🖥️ System & Browser
 
-- Windows versions `10.0.19045.6456` → `10.███.███.███`
-- Chrome versions `144.0.7559.60` → `144.███.███.███`
+- Windows versions `10.0.12345.1234` → `10.███.███.███`
+- Chrome versions `144.0.1234.60` → `144.███.███.███`
 - Android versions `Android 16` → `Android ██`
 
 ### 🏢 Business Data
@@ -231,9 +216,9 @@ inputStream
 
 ```javascript
 const express = require('express');
-const { Privacy-brush } = require('privacy-brush');
+const { PrivacyBrush } = require('privacy-brush');
 const app = express();
-const masker = new Privacy-brush();
+const masker = new PrivacyBrush();
 
 // Middleware: auto-mask sensitive info in responses
 app.use((req, res, next) => {
@@ -300,7 +285,7 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## 📄 License
 
-MIT License © 2024 Privacy-brush Contributors
+MIT License © 2024 PrivacyBrush Contributors
 
 ## 📞 Support
 
@@ -312,6 +297,6 @@ MIT License © 2024 Privacy-brush Contributors
 ---
 
 <p align="center">
-  <strong>Share Safely, Start with Privacy-brush</strong><br>
+  <strong>Share Safely, Start with PrivacyBrush</strong><br>
   <sub>Protect privacy, communicate with confidence</sub>
 </p>

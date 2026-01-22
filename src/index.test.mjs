@@ -1,6 +1,6 @@
 import { strict as assert } from "node:assert"
 import { test } from "node:test"
-import { ProductionTerminalMasker } from "./index.mjs"
+import { PrivacyBrush } from "./index.mjs"
 
 const WINDOWS_VERSION_SAMPLE = "10.0.12345.6785"
 const GOOGLE_BROWSER_VERSION_SAMPLE = "144.0.1234.56"
@@ -8,7 +8,7 @@ const EDGE_BROWSER_VERSION_SAMPLE = "144.0.3421.12"
 
 test("default configurations", () => {
   // 使用示例
-  const masker = new ProductionTerminalMasker()
+  const masker = new PrivacyBrush()
 
   // 处理终端输出
   const terminalOutput = `❯ flutter devices
@@ -50,7 +50,7 @@ troubleshooting tips.
 
 test("use custom maskChar and not preserveFirstPart", () => {
   // 使用示例
-  const masker = new ProductionTerminalMasker({
+  const masker = new PrivacyBrush({
     maskChar: "░",
     preserveFirstPart: false,
   })
@@ -95,7 +95,7 @@ troubleshooting tips.
 
 test("only mask browser_version", () => {
   // 使用示例
-  const masker = new ProductionTerminalMasker({
+  const masker = new PrivacyBrush({
     maskPatternNames: ["browser_version"],
   })
 
@@ -133,6 +133,26 @@ If you expected another device to be detected, please run "flutter doctor" to di
 increasing the time to wait for connected devices with the "--device-timeout" flag. Visit https://flutter.dev/setup/ for
 troubleshooting tips.
 `
+
+  assert.strictEqual(safeOutput, expectedOutput)
+})
+
+test("mask IP", () => {
+  // 使用示例
+  const masker = new PrivacyBrush()
+
+  // 处理终端输出
+  const terminalOutput = `Windows [Version 10.0.12345.1234]
+Chrome 144.0.1234.12
+User IP: 10.12.123.12`
+
+  const safeOutput = masker.maskText(terminalOutput)
+
+  // console.log("safeOutput3:", safeOutput)
+
+  const expectedOutput = `Windows [Version 10.█.█████.███]
+Chrome 144.█.████.██
+User IP: 10.██.███.██`
 
   assert.strictEqual(safeOutput, expectedOutput)
 })
