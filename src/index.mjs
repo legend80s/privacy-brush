@@ -1,4 +1,4 @@
-/** @import { IConfig, IPattern, IPatternName } from "./type" */
+/** @import { IConfig, IPattern, IPatternName } from "./type.js" */
 
 import { defaultConfig } from "./lib/config.mjs"
 
@@ -20,7 +20,8 @@ export class ProductionTerminalMasker {
       {
         /** @type {IPatternName} */
         name: "windows_version",
-        regex: /(\[版本\s+)(\d+\.\d+\.\d+\.\d+)(\])/,
+        // match both Chinese "版本" and English "Version"
+        regex: /(\[(?:版本|Version)\s+)(\d+\.\d+\.\d+\.\d+)(\])/i,
         /**
          * Handle windows version masking.
          * @param {string} match
@@ -131,7 +132,7 @@ export class ProductionTerminalMasker {
    */
   maskFile(inputPath, outputPath) {
     try {
-      const fs = require("fs")
+      const fs = require("node:fs")
 
       const content = fs.readFileSync(inputPath, "utf8")
       const maskedContent = this.maskText(content)
@@ -157,7 +158,7 @@ export class ProductionTerminalMasker {
 
     return new Transform({
       transform: (chunk, encoding, callback) => {
-        const text = chunk.toString()
+        const text = String(chunk)
         const masked = this.maskText(text)
         callback(null, masked)
       },
