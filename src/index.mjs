@@ -152,8 +152,8 @@ export class ProductionTerminalMasker {
   }
 
   // 实时流处理
-  createMaskStream() {
-    const { Transform } = require("stream")
+  async createMaskStream() {
+    const { Transform } = await import("node:stream")
 
     return new Transform({
       transform: (chunk, encoding, callback) => {

@@ -2,6 +2,8 @@
   "compilerOptions": {
     "strict": true,
     "lib": ["ESNext"],
+    "module": "nodenext",
+    "target": "es2017",
     "checkJs": true
   },
   "include": ["src"]
