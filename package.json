@@ -7,7 +7,15 @@
   "bin": "src/cli.mjs",
   "scripts": {
     "test": "node --test",
-    "typecheck": "tsgo --noEmit"
+    "typecheck": "tsgo --noEmit",
+    "check": "npm run typecheck && npm run test",
+    "========== Publishing ==========": "",
+    "pub:patch": "npm version patch",
+    "pub:minor": "npm version minor",
+    "pub:major": "npm version major",
+    "preversion": "git pull && git push origin HEAD && pnpm i && npm run check",
+    "postversion": "npm publish && git push origin HEAD && git push --tags",
+    "publishd": "npm publish --dry-run"
   },
   "keywords": [],
   "author": "",
