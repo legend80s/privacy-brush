@@ -1,0 +1,8 @@
+/**
+ * @type {Required<import('../type').IConfig>}
+ */
+export const defaultConfig = {
+  maskChar: "█",
+  preserveFirstPart: true, // 是否保留版本号的第一部分
+  maskPatternNames: ["windows_version", "browser_version", "ip_address"],
+}

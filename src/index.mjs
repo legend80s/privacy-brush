@@ -1,22 +1,24 @@
+/** @import { IConfig, IPattern, IPatternName } from "./type" */
+
+import { defaultConfig } from "./lib/config.mjs"
+
 export class ProductionTerminalMasker {
-  constructor(config = {}) {
+  /**
+   * @param {IConfig} [config]
+   */
+  constructor(config) {
     this.config = {
-      maskChar: "█",
-      preserveFirstPart: true, // 是否保留版本号的第一部分
+      ...defaultConfig,
       ...config,
     }
-
-    this.sensitivePatterns = this.buildPatterns()
   }
 
-  get maskChar() {
-    return this.config.maskChar
-  }
-
-  buildPatterns() {
-    return [
+  get defaultSensitivePatterns() {
+    /** @type {IPattern[]} */
+    const allPatterns = [
       // 操作系统版本 (Windows 10.0.19045.6456)
       {
+        /** @type {IPatternName} */
         name: "windows_version",
         regex: /(\[版本\s+)(\d+\.\d+\.\d+\.\d+)(\])/,
         /**
@@ -27,13 +29,14 @@ export class ProductionTerminalMasker {
          * @param {string} suffix
          * @returns {string}
          */
-        handler: (match, prefix, version, suffix) => {
+        replacer: (match, prefix, version, suffix) => {
           return prefix + this.maskVersion(version) + suffix
         },
       },
 
       // 浏览器版本 (Chrome 144.0.7559.60)
       {
+        /** @type {IPatternName} */
         name: "browser_version",
         regex: /(Chrome|Edge)\s+(\d+\.\d+\.\d+\.\d+)/gi,
         /**
@@ -43,61 +46,14 @@ export class ProductionTerminalMasker {
          * @param {string} version
          * @returns {string}
          */
-        handler: (match, browser, version) => {
+        replacer: (match, browser, version) => {
           return `${browser} ${this.maskVersion(version)}`
-        },
-      },
-
-      // API 版本 (API 36)
-      {
-        name: "api_version",
-        regex: /(API\s+)(\d+)/gi,
-        /**
-         * Handle API version masking.
-         * @param {string} match
-         * @param {string} prefix
-         * @param {string} version
-         * @returns {string}
-         */
-        handler: (match, prefix, version) => {
-          return prefix + this.maskChar.repeat(version.length)
-        },
-      },
-
-      // Android 版本
-      {
-        name: "android_version",
-        regex: /(Android\s+)(\d+)/gi,
-        /**
-         * Handle Android version masking.
-         * @param {string} match
-         * @param {string} prefix
-         * @param {string} version
-         * @returns {string}
-         */
-        handler: (match, prefix, version) => {
-          return prefix + this.maskChar.repeat(version.length)
-        },
-      },
-
-      // 端口号 (emulator-5554)
-      {
-        name: "port_number",
-        regex: /(emulator-)(\d{4})/,
-        /**
-         * Handle emulator port masking.
-         * @param {string} match
-         * @param {string} prefix
-         * @param {string} port
-         * @returns {string}
-         */
-        handler: (match, prefix, port) => {
-          return prefix + this.maskChar.repeat(port.length)
         },
       },
 
       // IP地址
       {
+        /** @type {IPatternName} */
         name: "ip_address",
         regex: /\b(\d{1,3}\.){3}\d{1,3}\b/g,
         /**
@@ -105,7 +61,7 @@ export class ProductionTerminalMasker {
          * @param {string} match
          * @returns {string}
          */
-        handler: match => {
+        replacer: match => {
           const parts = match.split(".")
           return parts
             .map((part, index) =>
@@ -115,6 +71,22 @@ export class ProductionTerminalMasker {
         },
       },
     ]
+
+    return allPatterns
+  }
+
+  get maskChar() {
+    return this.config.maskChar ?? defaultConfig.maskChar
+  }
+
+  /**
+   *
+   * @returns {IPattern[]}
+   */
+  get sensitivePatterns() {
+    return this.defaultSensitivePatterns.filter(({ name }) =>
+      this.config.maskPatternNames?.includes(name),
+    )
   }
 
   /**
@@ -145,7 +117,7 @@ export class ProductionTerminalMasker {
     let result = text
 
     this.sensitivePatterns.forEach(pattern => {
-      result = result.replace(pattern.regex, pattern.handler)
+      result = result.replace(pattern.regex, pattern.replacer)
     })
 
     return result
