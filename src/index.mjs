@@ -19,6 +19,14 @@ export class ProductionTerminalMasker {
       {
         name: "windows_version",
         regex: /(\[版本\s+)(\d+\.\d+\.\d+\.\d+)(\])/,
+        /**
+         * Handle windows version masking.
+         * @param {string} match
+         * @param {string} prefix
+         * @param {string} version
+         * @param {string} suffix
+         * @returns {string}
+         */
         handler: (match, prefix, version, suffix) => {
           return prefix + this.maskVersion(version) + suffix
         },
@@ -28,6 +36,13 @@ export class ProductionTerminalMasker {
       {
         name: "browser_version",
         regex: /(Chrome|Edge)\s+(\d+\.\d+\.\d+\.\d+)/gi,
+        /**
+         * Handle browser version masking.
+         * @param {string} match
+         * @param {string} browser
+         * @param {string} version
+         * @returns {string}
+         */
         handler: (match, browser, version) => {
           return `${browser} ${this.maskVersion(version)}`
         },
@@ -37,6 +52,13 @@ export class ProductionTerminalMasker {
       {
         name: "api_version",
         regex: /(API\s+)(\d+)/gi,
+        /**
+         * Handle API version masking.
+         * @param {string} match
+         * @param {string} prefix
+         * @param {string} version
+         * @returns {string}
+         */
         handler: (match, prefix, version) => {
           return prefix + this.maskChar.repeat(version.length)
         },
@@ -46,6 +68,13 @@ export class ProductionTerminalMasker {
       {
         name: "android_version",
         regex: /(Android\s+)(\d+)/gi,
+        /**
+         * Handle Android version masking.
+         * @param {string} match
+         * @param {string} prefix
+         * @param {string} version
+         * @returns {string}
+         */
         handler: (match, prefix, version) => {
           return prefix + this.maskChar.repeat(version.length)
         },
@@ -55,6 +84,13 @@ export class ProductionTerminalMasker {
       {
         name: "port_number",
         regex: /(emulator-)(\d{4})/,
+        /**
+         * Handle emulator port masking.
+         * @param {string} match
+         * @param {string} prefix
+         * @param {string} port
+         * @returns {string}
+         */
         handler: (match, prefix, port) => {
           return prefix + this.maskChar.repeat(port.length)
         },
@@ -64,6 +100,11 @@ export class ProductionTerminalMasker {
       {
         name: "ip_address",
         regex: /\b(\d{1,3}\.){3}\d{1,3}\b/g,
+        /**
+         * Handle IP address masking.
+         * @param {string} match
+         * @returns {string}
+         */
         handler: match => {
           const parts = match.split(".")
           return parts
@@ -76,6 +117,11 @@ export class ProductionTerminalMasker {
     ]
   }
 
+  /**
+   * Mask a version string.
+   * @param {string} version
+   * @returns {string}
+   */
   maskVersion(version) {
     const parts = version.split(".")
 
@@ -125,7 +171,10 @@ export class ProductionTerminalMasker {
 
       return maskedContent
     } catch (error) {
-      console.error("Error processing file:", error.message)
+      console.error(
+        "Error processing file:",
+        error instanceof Error ? error.message : String(error),
+      )
       throw error
     }
   }
