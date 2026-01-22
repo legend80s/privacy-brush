@@ -45,6 +45,11 @@ const [err, result] = safeCall(() =>
       verbose: {
         type: "boolean",
       },
+      // version
+      version: {
+        type: "boolean",
+        short: "v",
+      },
     },
   }),
 )
@@ -55,7 +60,7 @@ async function main() {
   if (err) {
     console.error(verbose ? err : String(err))
     console.error()
-    printHelp()
+    await printHelp()
 
     process.exit(1)
   }
@@ -63,8 +68,12 @@ async function main() {
   const { values } = result
 
   if (values.help) {
-    printHelp()
+    await printHelp()
     process.exit(0)
+  }
+
+  if (values.version) {
+    await printVersion()
   }
 
   // console.log("values:", values)
@@ -104,13 +113,40 @@ function safeCall(fn) {
   }
 }
 
-function printHelp() {
-  console.log(`Usage: node src/cli.mjs [options]
+async function printHelp() {
+  console.log(`
+                                    ${await getNameVersion()}
+
+Usage: pnpx privacy-brush [options]
 
 Options:
   --mask, -m                Character to use for masking (default: "█")
   --preserve-first, -p   Whether to preserve the first part of version numbers (default: true, \`--no-preserve-first\` to false)
   --help, -h                Show this help message (default: false)
   --verbose                 Enable verbose output (default: false)
+  --version, -v             Show version information (default: false)
+
+Examples:
+  echo "Microsoft Windows [Version 10.0.12345.6785]" | pnpx privacy-brush
+  echo "Microsoft Windows [Version 10.0.12345.6785]" | pnpx privacy-brush --mask "X" --no-preserve-first
 `)
+}
+
+async function parsePackageJSON() {
+  const fs = await import("node:fs")
+  const pkgPath = new URL("../package.json", import.meta.url)
+
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"))
+
+  return pkg
+}
+
+async function getNameVersion() {
+  const pkg = await parsePackageJSON()
+
+  return `${pkg.name}@${pkg.version}`
+}
+
+async function printVersion() {
+  console.log(await getNameVersion())
 }
