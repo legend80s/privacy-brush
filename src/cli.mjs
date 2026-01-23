@@ -37,7 +37,7 @@ async function main() {
     return
   }
 
-  // console.log("values:", values)
+  verbose && console.log("values:", values)
   // console.log("positionals:", positionals)
 
   const config = values
@@ -45,6 +45,7 @@ async function main() {
   const masker = new PrivacyBrush({
     maskChar: config.mask,
     preserveFirstPart: config["preserve-first"],
+    customPatterns: config.pattern,
   })
 
   // If an input file is provided, process it. If --output-file is provided write there, otherwise print to stdout.

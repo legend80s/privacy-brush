@@ -20,6 +20,12 @@ export const parsedResult = safeCall(() =>
         type: "string",
         short: "i",
       },
+      // custom regex pattern(s) to mask
+      pattern: {
+        type: "string",
+        short: "r",
+        multiple: true,
+      },
       // output file to write masked content
       "output-file": {
         type: "string",

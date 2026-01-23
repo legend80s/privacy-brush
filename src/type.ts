@@ -2,6 +2,7 @@ export type IConfig = {
   maskChar?: string
   preserveFirstPart?: boolean
   maskPatternNames?: IPatternName[]
+  customPatterns?: (string | RegExp)[]
 }
 
 export type IPatternName =
@@ -9,6 +10,7 @@ export type IPatternName =
   | "browser_version"
   | "android_version"
   | "ip_address"
+  | (string & {})
 
 export type IPattern = {
   name: IPatternName

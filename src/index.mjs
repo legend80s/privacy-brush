@@ -73,6 +73,67 @@ export class PrivacyBrush {
     return allPatterns
   }
 
+  /**
+   * Parse custom pattern inputs into maskable patterns.
+   * Accepts strings like '/sk-[a-z0-9]{20,}/i' or raw pattern bodies.
+   * @returns {IPattern[]}
+   */
+  get customSensitivePatterns() {
+    const customPatterns = this.config.customPatterns
+
+    /**
+     * Parse string pattern to RegExp.
+     * @param {string | RegExp} pattern
+     * @returns {RegExp} returns Parsed RegExp with global flag
+     * @example
+     * '/\\d{1,}/' => /\d{1,}/g
+     */
+    const parse = pattern => {
+      if (pattern instanceof RegExp) {
+        // always replace globally
+        const flags = pattern.flags.includes("g")
+          ? pattern.flags
+          : `${pattern.flags}g`
+
+        return new RegExp(pattern.source, flags)
+      }
+
+      const patternStr = pattern.trim()
+      // `/\d{1,}/g`.match(/^\/(.*)\/(\w*)$/) => [/\d{1,}/g, '\d{1,}', 'g']
+      const matches = patternStr.match(/^\/(.*)\/(\w*)$/)
+
+      if (matches) {
+        const body = matches[1]
+        let flags = matches[2] ?? ""
+
+        if (!flags.includes("g")) flags += "g"
+
+        return new RegExp(body, flags)
+      }
+
+      // treat as literal body
+      return new RegExp(patternStr, "g")
+    }
+
+    return customPatterns.map((pattern, i) => {
+      const regex = parse(pattern)
+      return {
+        name: `custom_${i + 1}`,
+        regex,
+        replacer: (match, group) => {
+          // const groups = rest.slice(0, -2) // last two are offset and input string
+          verbose && console.log("custom pattern match:", { match, group })
+
+          if (typeof group === "string") {
+            return match.replace(group, this.maskChar.repeat(group.length))
+          }
+
+          return this.maskChar.repeat(match.length)
+        },
+      }
+    })
+  }
+
   get maskChar() {
     return this.config.maskChar ?? defaultConfig.maskChar
   }
@@ -82,9 +143,18 @@ export class PrivacyBrush {
    * @returns {IPattern[]}
    */
   get sensitivePatterns() {
-    return this.defaultSensitivePatterns.filter(({ name }) =>
+    const base = this.defaultSensitivePatterns.filter(({ name }) =>
       this.config.maskPatternNames?.includes(name),
     )
+
+    const customSensitivePatterns = this.customSensitivePatterns
+    verbose &&
+      console.log(
+        "🚀 ~ PrivacyBrush ~ sensitivePatterns ~ customSensitivePatterns:",
+        customSensitivePatterns,
+      )
+
+    return base.concat(customSensitivePatterns)
   }
 
   /**
