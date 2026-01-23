@@ -104,11 +104,14 @@ async function main() {
 
 async function printHelp() {
   console.log(`
-                                    ${await getNameVersion()}
+                                    # ${await getNameVersion()}
 
-Usage: pnpx privacy-brush [options]
+## Usage:
 
-Options:
+pnpx privacy-brush [options]
+
+
+## Options:
   --input-file, -i         Path to input file to mask and print to stdout
   --output-file, -o        Path to write masked output (if given, write to this file)
   --mask, -m                Character to use for masking (default: "█")
@@ -117,14 +120,16 @@ Options:
   --verbose                 Enable verbose output (default: false)
   --version, -v             Show version information (default: false)
 
-Examples:
-  flutter devices | pnpx privacy-brush
-  
-  echo "Microsoft Windows [Version 10.0.12345.6785]" | pnpx privacy-brush
-  echo "Microsoft Windows [Version 10.0.12345.6785]" | pnpx privacy-brush --mask "X" --no-preserve-first
 
-  pnpx privacy-brush --input-file test/fixtures/terminal_log.md # mask and print to stdout
-  pnpx privacy-brush --input-file test/fixtures/terminal_log.md --output-file masked_log.md
+## Examples:
+
+flutter devices | pnpx privacy-brush
+
+echo "Microsoft Windows [Version 10.0.12345.6785]" | pnpx privacy-brush
+echo "Microsoft Windows [Version 10.0.12345.6785]" | pnpx privacy-brush --mask "X" --no-preserve-first
+
+pnpx privacy-brush --input-file test/fixtures/terminal_log.md # mask and print to stdout
+pnpx privacy-brush --input-file test/fixtures/terminal_log.md --output-file masked_log.md
 `)
 }
 
