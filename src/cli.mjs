@@ -113,10 +113,12 @@ pnpx privacy-brush [options]
 
 
 ## Options:
-  --input-file, -i         Path to input file to mask and print to stdout
-  --output-file, -o        Path to write masked output (if given, write to this file)
+  --input-file, -i          Path to input file to mask and print to stdout
+  --output-file, -o         Path to write masked output (if given, write to this file)
   --mask, -m                Character to use for masking (default: "█")
   --preserve-first, -p      Whether to preserve the first part of version numbers (default: true, \`--no-preserve-first\` to false)
+  --pattern, -r             Custom regex pattern(s) to mask (can be used multiple times. E.g. --pattern '\\d{2,}' --pattern 'sk-([0-9a-z]{20,})')
+
   --help, -h                Show this help message (default: false)
   --verbose                 Enable verbose output (default: false)
   --version, -v             Show version information (default: false)
