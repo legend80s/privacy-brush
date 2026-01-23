@@ -1,6 +1,8 @@
 /** @import { IConfig, IPattern, IPatternName } from "./type.js" */
 
+import { createRequire } from "node:module"
 import { defaultConfig } from "./lib/config.mjs"
+import { verbose } from "./lib/parse-args.mjs"
 
 export class PrivacyBrush {
   /**
@@ -110,6 +112,8 @@ export class PrivacyBrush {
    * @returns
    */
   maskText(text) {
+    verbose && console.log(`[PrivacyBrush] Masking text: |${text}|`)
+
     let result = text
 
     this.sensitivePatterns.forEach(pattern => {
@@ -122,11 +126,13 @@ export class PrivacyBrush {
   /**
    * 批量处理文件
    * @param {string} inputPath
-   * @param {string} outputPath
+   * @param {string} [outputPath]
    * @returns
    */
   maskFile(inputPath, outputPath) {
     try {
+      // Delay-load fs to avoid startup cost when this method is not used
+      const require = createRequire(import.meta.url)
       const fs = require("node:fs")
 
       const content = fs.readFileSync(inputPath, "utf8")
@@ -134,7 +140,7 @@ export class PrivacyBrush {
 
       if (outputPath) {
         fs.writeFileSync(outputPath, maskedContent, "utf8")
-        console.log(`Masked file saved to: ${outputPath}`)
+        verbose && console.log(`Masked file saved to: ${outputPath}`)
       }
 
       return maskedContent
@@ -154,6 +160,7 @@ export class PrivacyBrush {
     return new Transform({
       transform: (chunk, encoding, callback) => {
         const text = String(chunk)
+
         const masked = this.maskText(text)
         callback(null, masked)
       },

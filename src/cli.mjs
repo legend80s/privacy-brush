@@ -1,5 +1,5 @@
-import { parseArgs } from "node:util"
 import { PrivacyBrush } from "./index.mjs"
+import { parsedResult, verbose } from "./lib/parse-args.mjs"
 
 // 流式处理：将 stdin 通过 masker 的 Transform 流处理后输出到 stdout
 // Usage: some_command | node src/cli.mjs
@@ -11,52 +11,11 @@ import { PrivacyBrush } from "./index.mjs"
 // Input: Microsoft Windows [版本 10.0.12345.6785]
 // Output: Microsoft Windows [版本 10.█.█████.████]
 
-// get config from command line arguments use native `parseArgs`
-// node src/cli.mjs --mask X --preserve-first false
-const args = process.argv.slice(2)
-// console.log("args:", args) // args: [ '--mask', 'X', '--preserve-first', 'false' ]
-
-const verbose = args.includes("--verbose")
-
-const [err, result] = safeCall(() =>
-  parseArgs({
-    allowPositionals: true,
-    allowNegative: true,
-
-    args,
-
-    options: {
-      mask: {
-        type: "string",
-        short: "m",
-        default: "█",
-      },
-      "preserve-first": {
-        type: "boolean",
-        short: "p",
-        default: true,
-      },
-      // help
-      help: {
-        type: "boolean",
-        short: "h",
-      },
-      // verbose
-      verbose: {
-        type: "boolean",
-      },
-      // version
-      version: {
-        type: "boolean",
-        short: "v",
-      },
-    },
-  }),
-)
-
 await main()
 
 async function main() {
+  const [err, result] = parsedResult
+
   if (err) {
     console.error(verbose ? err : String(err))
     console.error()
@@ -87,7 +46,47 @@ async function main() {
     maskChar: config.mask,
     preserveFirstPart: config["preserve-first"],
   })
-  const maskStream = await masker.createMaskStream()
+
+  // If an input file is provided, process it. If --output-file is provided write there, otherwise print to stdout.
+  if (config["input-file"]) {
+    try {
+      if (config["output-file"]) {
+        // maskFile will write to the output path
+        masker.maskFile(config["input-file"], config["output-file"])
+        return
+      }
+
+      const masked = masker.maskFile(config["input-file"])
+
+      process.stdout.write(masked)
+      return
+    } catch {
+      process.exitCode = 1
+      return
+    }
+  }
+
+  // If an output file was requested for piped or interactive stdin, collect all input, mask and write to file.
+  if (config["output-file"]) {
+    try {
+      const chunks = []
+      for await (const chunk of process.stdin) {
+        chunks.push(String(chunk))
+      }
+
+      const inputText = chunks.join("")
+      console.log(`inputText: |${inputText}|`)
+      const masked = masker.maskText(inputText)
+
+      const fs = await import("node:fs/promises")
+      await fs.writeFile(config["output-file"], masked, "utf8")
+      return
+    } catch (error) {
+      console.error(error)
+      process.exitCode = 1
+      return
+    }
+  }
 
   // 检查 stdin 是否连接到管道（有数据输入）
   const isPipedInput = !process.stdin.isTTY
@@ -97,22 +96,10 @@ async function main() {
     process.stdout.write("Input (Press Ctrl+C to exit...):\n")
   }
 
-  // 处理所有数据
+  const maskStream = await masker.createMaskStream()
+
+  // Default: stream masking to stdout
   process.stdin.pipe(maskStream).pipe(process.stdout)
-}
-/**
- * @template T
- * @param {(...args: any[]) => T} fn
- * @returns {[null, T] | [Error, null]}
- */
-function safeCall(fn) {
-  try {
-    const result = fn()
-    return [null, result]
-  } catch (error) {
-    // @ts-expect-error
-    return [error, null]
-  }
 }
 
 async function printHelp() {
@@ -122,6 +109,8 @@ async function printHelp() {
 Usage: pnpx privacy-brush [options]
 
 Options:
+  --input-file, -i         Path to input file to mask and print to stdout
+  --output-file, -o        Path to write masked output (if given, write to this file)
   --mask, -m                Character to use for masking (default: "█")
   --preserve-first, -p      Whether to preserve the first part of version numbers (default: true, \`--no-preserve-first\` to false)
   --help, -h                Show this help message (default: false)
@@ -131,6 +120,8 @@ Options:
 Examples:
   echo "Microsoft Windows [Version 10.0.12345.6785]" | pnpx privacy-brush
   echo "Microsoft Windows [Version 10.0.12345.6785]" | pnpx privacy-brush --mask "X" --no-preserve-first
+  node src/cli.mjs --input-file test/fixtures/terminal_log.md
+  node src/cli.mjs --input-file test/fixtures/terminal_log.md --output-file masked_log.md
 `)
 }
 
