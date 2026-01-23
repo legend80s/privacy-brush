@@ -79,7 +79,7 @@ export class PrivacyBrush {
    * @returns {IPattern[]}
    */
   get customSensitivePatterns() {
-    const customPatterns = this.config.customPatterns
+    const customPatterns = this.config.customPatterns || []
 
     /**
      * Parse string pattern to RegExp.

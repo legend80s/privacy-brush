@@ -10,16 +10,15 @@ test("❯ echo | node src/cli.mjs", async () => {
   // `echo "${text}"` will print text + newline to stdout
   // `echo -n "${text}"` will print -n and text + newline to stdout
   // So we use spawn with args [`-n`, text] to avoid the extra newline
-  // async function pipeCommands() {
-  //   const echo = spawnSync("echo", ["-n", text])
-  //   const node = spawnSync("node", ["src/cli.mjs"], {
-  //     input: echo.stdout,
-  //   })
+  function pipeCommands() {
+    const node = spawnSync("node", ["src/cli.mjs"], {
+      input: text,
+    })
 
-  //   return node.stdout.toString("utf8")
-  // }
+    return node.stdout.toString("utf8")
+  }
 
-  const actual = pipeCommands(`echo -n ${text} | node src/cli.mjs`)
+  const actual = pipeCommands()
 
   const expected = "Microsoft Windows [Version 10.█.█████.████]"
   assert.strictEqual(actual, expected)
@@ -73,6 +72,39 @@ DEBUG: Browser: Chrome/144.0.1234.60
 DEBUG: OS: Windows 10.0.12345
 `
 
+  assert.strictEqual(actual, expected)
+})
+
+test(`custom patterns`, () => {
+  const input = `DEEPSEEK_API_KEY=sk-af75149812524eb08eb302bf9604c8e8`
+
+  const actual = execSync(
+    `echo ${input} | node src/cli.mjs --pattern /sk-([a-z0-9]{20,})/`,
+  ).toString("utf8")
+
+  const expected = "DEEPSEEK_API_KEY=sk-████████████████████████████████ \r\n"
+  assert.strictEqual(actual, expected)
+})
+
+test(`custom patterns`, () => {
+  const input = `DEEPSEEK_API_KEY=sk-af75149812524eb08eb302bf9604c8e8`
+
+  const actual = execSync(
+    `echo ${input} | node src/cli.mjs --pattern /sk-[a-z0-9]{20,}/`,
+  ).toString("utf8")
+
+  const expected = "DEEPSEEK_API_KEY=███████████████████████████████████ \r\n"
+  assert.strictEqual(actual, expected)
+})
+
+test(`custom patterns`, () => {
+  const input = `DEEPSEEK_API_KEY=sk-af75149812524eb08eb302bf9604c8e8`
+
+  const actual = execSync(
+    `echo ${input} | node src/cli.mjs --pattern /([0-9]{2,})/`,
+  ).toString("utf8")
+
+  const expected = "DEEPSEEK_API_KEY=sk-af███████████eb██eb███bf████c8e8 \r\n"
   assert.strictEqual(actual, expected)
 })
 
