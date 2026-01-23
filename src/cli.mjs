@@ -118,10 +118,13 @@ Options:
   --version, -v             Show version information (default: false)
 
 Examples:
+  flutter devices | pnpx privacy-brush
+  
   echo "Microsoft Windows [Version 10.0.12345.6785]" | pnpx privacy-brush
   echo "Microsoft Windows [Version 10.0.12345.6785]" | pnpx privacy-brush --mask "X" --no-preserve-first
-  node src/cli.mjs --input-file test/fixtures/terminal_log.md
-  node src/cli.mjs --input-file test/fixtures/terminal_log.md --output-file masked_log.md
+
+  pnpx privacy-brush --input-file test/fixtures/terminal_log.md # mask and print to stdout
+  pnpx privacy-brush --input-file test/fixtures/terminal_log.md --output-file masked_log.md
 `)
 }
 
