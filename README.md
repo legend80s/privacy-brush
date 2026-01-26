@@ -110,12 +110,13 @@ console.log(masker.mask(debugLog));
 
 ```bash
 # Basic usage
-privacy-brush [input-file] [options]
+privacy-brush [options]
 
 # Options
---output, -o <file>      Output to file
 --char, -c <char>        Mask character (default: █)
 --preserve-first         Keep first part of version numbers
+--input, -i <file>       File to read from
+--output, -o <file>      Output to file
 --strict                 Strict mode (mask more info)
 --config <file>          Use config file
 --list-patterns          List all built-in patterns
@@ -123,6 +124,8 @@ privacy-brush [input-file] [options]
 --version                Show version
 --help                   Show help
 ```
+
+Read from stdin by default.
 
 ### JavaScript API Options
 

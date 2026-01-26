@@ -126,7 +126,7 @@ console.log(masker.mask(debugLog));
 
 ```bash
 # 基本用法
-privacy-brush [input-file] [options]
+privacy-brush [options]
 
 # 选项
 --output, -o <file>      输出到文件
