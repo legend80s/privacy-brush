@@ -68,6 +68,22 @@ export class PrivacyBrush {
           return this.maskVersion(match)
         },
       },
+
+      // user name `/Users/test/code/` => `/Users/████/code/`
+      {
+        /** @type {IPatternName} */
+        name: "user_name_in_path",
+        regex: /\/Users\/([^\/]+)\//g,
+        /**
+         * Handle user name in file path masking.
+         * @param {string} match
+         * @param {string} userName
+         * @returns {string}
+         */
+        replacer: (match, userName) => {
+          return match.replace(userName, this.maskChar.repeat(userName.length))
+        },
+      },
     ]
 
     return allPatterns
@@ -187,6 +203,7 @@ export class PrivacyBrush {
     let result = text
 
     this.sensitivePatterns.forEach(pattern => {
+      verbose && console.log("pattern:", pattern)
       result = result.replace(pattern.regex, pattern.replacer)
     })
 
