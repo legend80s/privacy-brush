@@ -79,7 +79,7 @@ test(`custom patterns`, () => {
   const input = `DEEPSEEK_API_KEY=sk-af75149812524eb08eb302bf9604c8e8`
 
   const actual = execSync(
-    `echo ${input} | node src/cli.mjs --pattern /sk-([a-z0-9]{20,})/`,
+    `echo ${input} | node src/cli.mjs --pattern '/sk-([a-z0-9]{20,})/'`,
   ).toString("utf8").trim()
 
   const expected = "DEEPSEEK_API_KEY=sk-████████████████████████████████"
@@ -90,7 +90,7 @@ test(`custom patterns`, () => {
   const input = `DEEPSEEK_API_KEY=sk-af75149812524eb08eb302bf9604c8e8`
 
   const actual = execSync(
-    `echo ${input} | node src/cli.mjs --pattern /sk-[a-z0-9]{20,}/`,
+    `echo ${input} | node src/cli.mjs --pattern '/sk-[a-z0-9]{20,}/'`,
   ).toString("utf8").trim()
 
   const expected = "DEEPSEEK_API_KEY=███████████████████████████████████"
@@ -101,7 +101,7 @@ test(`custom patterns`, () => {
   const input = `DEEPSEEK_API_KEY=sk-af75149812524eb08eb302bf9604c8e8`
 
   const actual = execSync(
-    `echo ${input} | node src/cli.mjs --pattern /([0-9]{2,})/`,
+    `echo ${input} | node src/cli.mjs --pattern '/([0-9]{2,})/'`,
   ).toString("utf8").trim()
 
   const expected = "DEEPSEEK_API_KEY=sk-af███████████eb██eb███bf████c8e8"
