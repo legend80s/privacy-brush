@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { PrivacyBrush } from "./index.mjs"
 import { parsedResult, verbose } from "./lib/parse-args.mjs"
 
