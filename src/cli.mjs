@@ -26,6 +26,7 @@ async function main() {
   }
 
   const { values } = result
+  verbose && console.log("values:", values)
 
   if (values.help) {
     await printHelp()
@@ -37,20 +38,6 @@ async function main() {
     return
   }
 
-  if (values["list-patterns"]) {
-    // instantiate PrivacyBrush to access default patterns
-    const pb = new PrivacyBrush()
-    const patterns = pb.defaultSensitivePatterns
-
-    console.log("Built-in patterns:")
-    console.table(patterns.map(({ replacer: _, ...args }) => args))
-
-    return
-  }
-
-  verbose && console.log("values:", values)
-  // console.log("positionals:", positionals)
-
   const config = values
 
   const masker = new PrivacyBrush({
@@ -58,6 +45,23 @@ async function main() {
     preserveFirstPart: config["preserve-first"],
     customPatterns: config.pattern,
   })
+
+  if (values["list-patterns"]) {
+    // instantiate PrivacyBrush to access default patterns
+    const patterns = masker.defaultSensitivePatterns
+
+    console.log("\nBuilt-in patterns:")
+    console.table(patterns.map(({ replacer: _, ...args }) => args))
+
+    if (masker.customSensitivePatterns.length) {
+      console.log("Custom patterns:")
+      console.table(
+        masker.customSensitivePatterns.map(({ replacer: _, ...args }) => args),
+      )
+    }
+
+    return
+  }
 
   // If an input file is provided, process it. If --output-file is provided write there, otherwise print to stdout.
   if (config["input-file"]) {
