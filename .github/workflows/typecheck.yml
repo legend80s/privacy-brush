@@ -19,10 +19,22 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Enable Corepack and prepare pnpm
+      - name: Debug environment
         run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
+          echo "== node/npm info =="
+          node -v || true
+          npm -v || true
+          echo "== PATH =="
+          echo $PATH
+          echo "== which pnpm =="
+          which pnpm || true
+          echo "== corepack =="
+          corepack --version || true
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
