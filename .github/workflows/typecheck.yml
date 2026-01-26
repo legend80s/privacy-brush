@@ -13,28 +13,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'pnpm'
-
-      - name: Debug environment
-        run: |
-          echo "== node/npm info =="
-          node -v || true
-          npm -v || true
-          echo "== PATH =="
-          echo $PATH
-          echo "== which pnpm =="
-          which pnpm || true
-          echo "== corepack =="
-          corepack --version || true
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          # Now pnpm is installed, so we can cache it
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
