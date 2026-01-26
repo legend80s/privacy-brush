@@ -35,6 +35,11 @@
   ],
   "author": "legend80s",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/legend80s/privacy-brush.git"
+  },
+  "homepage": "https://github.com/legend80s/privacy-brush",
   "devDependencies": {
     "@typescript/native-preview": "7.0.0-dev.20260122.2",
     "@types/node": "^25.0.10"
