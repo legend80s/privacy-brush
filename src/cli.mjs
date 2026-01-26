@@ -37,6 +37,17 @@ async function main() {
     return
   }
 
+  if (values["list-patterns"]) {
+    // instantiate PrivacyBrush to access default patterns
+    const pb = new PrivacyBrush()
+    const patterns = pb.defaultSensitivePatterns
+
+    console.log("Built-in patterns:")
+    console.table(patterns.map(({ replacer: _, ...args }) => args))
+
+    return
+  }
+
   verbose && console.log("values:", values)
   // console.log("positionals:", positionals)
 
@@ -118,6 +129,7 @@ pnpx privacy-brush [options]
   --mask, -m                Character to use for masking (default: "█")
   --preserve-first, -p      Whether to preserve the first part of version numbers (default: true, \`--no-preserve-first\` to false)
   --pattern, -r             Custom regex pattern(s) to mask (can be used multiple times. E.g. --pattern '\\d{2,}' --pattern 'sk-([0-9a-z]{20,})')
+  --list-patterns           List all built-in patterns
 
   --help, -h                Show this help message (default: false)
   --verbose                 Enable verbose output (default: false)

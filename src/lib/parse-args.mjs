@@ -55,6 +55,10 @@ export const parsedResult = safeCall(() =>
         type: "boolean",
         short: "v",
       },
+      // list built-in patterns
+      "list-patterns": {
+        type: "boolean",
+      },
     },
   }),
 )
