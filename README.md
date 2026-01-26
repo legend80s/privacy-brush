@@ -9,9 +9,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![tsgo](https://github.com/legend80s/privacy-brush/actions/workflows/typecheck.yml/badge.svg?branch=master)](https://github.com/legend80s/privacy-brush/actions/workflows/typecheck.yml)
 
-<p align="center">
+<!-- <p align="center">
   <img src="https://raw.githubusercontent.com/legend80s/privacy-brush/main/docs/demo.gif" alt="PrivacyBrush Demo" width="800">
-</p>
+</p> -->
 
 ## ✨ Features
 
