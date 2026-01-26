@@ -46,7 +46,7 @@ pnpm add privacy-brush
 flutter devices | privacy-brush
 
 # 处理文件
-privacy-brush input.log -o masked.log
+privacy-brush -i input.log -o masked.log
 
 # 实时处理命令输出
 some-command --verbose | privacy-brush --live

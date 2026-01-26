@@ -30,7 +30,7 @@ flutter devices | pnpx privacy-brush
 flutter doctor | pnpx privacy-brush
 
 # Process files
-privacy-brush input.log -o masked.log
+privacy-brush -i input.log -o masked.log
 
 # Real-time command output
 echo 'Microsoft Windows [Version 10.0.12345.6785]' | privacy-brush
