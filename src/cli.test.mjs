@@ -27,12 +27,12 @@ test("❯ echo | node src/cli.mjs", async () => {
 test("--mask", async () => {
   const actual = execSync(
     'echo Microsoft Windows [Version 10.0.12345.6785] | node src/cli.mjs --mask "🔒" --no-preserve-first',
-  ).toString("utf8")
+  ).toString("utf8").trim()
 
   // console.log(`actual:|${actual}|`)
 
   const expected =
-    "Microsoft Windows [Version 🔒🔒.🔒.🔒🔒🔒🔒🔒.🔒🔒🔒🔒] \r\n"
+    "Microsoft Windows [Version 🔒🔒.🔒.🔒🔒🔒🔒🔒.🔒🔒🔒🔒]"
   assert.strictEqual(actual, expected)
 })
 
@@ -80,9 +80,9 @@ test(`custom patterns`, () => {
 
   const actual = execSync(
     `echo ${input} | node src/cli.mjs --pattern /sk-([a-z0-9]{20,})/`,
-  ).toString("utf8")
+  ).toString("utf8").trim()
 
-  const expected = "DEEPSEEK_API_KEY=sk-████████████████████████████████ \r\n"
+  const expected = "DEEPSEEK_API_KEY=sk-████████████████████████████████"
   assert.strictEqual(actual, expected)
 })
 
@@ -91,9 +91,9 @@ test(`custom patterns`, () => {
 
   const actual = execSync(
     `echo ${input} | node src/cli.mjs --pattern /sk-[a-z0-9]{20,}/`,
-  ).toString("utf8")
+  ).toString("utf8").trim()
 
-  const expected = "DEEPSEEK_API_KEY=███████████████████████████████████ \r\n"
+  const expected = "DEEPSEEK_API_KEY=███████████████████████████████████"
   assert.strictEqual(actual, expected)
 })
 
@@ -102,9 +102,9 @@ test(`custom patterns`, () => {
 
   const actual = execSync(
     `echo ${input} | node src/cli.mjs --pattern /([0-9]{2,})/`,
-  ).toString("utf8")
+  ).toString("utf8").trim()
 
-  const expected = "DEEPSEEK_API_KEY=sk-af███████████eb██eb███bf████c8e8 \r\n"
+  const expected = "DEEPSEEK_API_KEY=sk-af███████████eb██eb███bf████c8e8"
   assert.strictEqual(actual, expected)
 })
 
