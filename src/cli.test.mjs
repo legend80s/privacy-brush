@@ -27,12 +27,13 @@ test("❯ echo | node src/cli.mjs", async () => {
 test("--mask", async () => {
   const actual = execSync(
     'echo Microsoft Windows [Version 10.0.12345.6785] | node src/cli.mjs --mask "🔒" --no-preserve-first',
-  ).toString("utf8").trim()
+  )
+    .toString("utf8")
+    .trim()
 
   // console.log(`actual:|${actual}|`)
 
-  const expected =
-    "Microsoft Windows [Version 🔒🔒.🔒.🔒🔒🔒🔒🔒.🔒🔒🔒🔒]"
+  const expected = "Microsoft Windows [Version 🔒🔒.🔒.🔒🔒🔒🔒🔒.🔒🔒🔒🔒]"
   assert.strictEqual(actual, expected)
 })
 
@@ -78,20 +79,26 @@ DEBUG: OS: Windows 10.0.12345
 test(`custom patterns`, () => {
   const input = `DEEPSEEK_API_KEY=sk-af75149812524eb08eb302bf9604c8e8`
 
-  const actual = execSync(
-    `echo ${input} | node src/cli.mjs --pattern '/sk-([a-z0-9]{20,})/'`,
-  ).toString("utf8").trim()
+  const actual = spawnSync(
+    "node",
+    ["src/cli.mjs", "--pattern", "/sk-([a-z0-9]{20,})/"],
+    { input },
+  ).stdout.toString("utf8")
 
   const expected = "DEEPSEEK_API_KEY=sk-████████████████████████████████"
   assert.strictEqual(actual, expected)
 })
 
-test(`custom patterns`, () => {
+test(`custom patterns without ()`, () => {
   const input = `DEEPSEEK_API_KEY=sk-af75149812524eb08eb302bf9604c8e8`
 
-  const actual = execSync(
-    `echo ${input} | node src/cli.mjs --pattern '/sk-[a-z0-9]{20,}/'`,
-  ).toString("utf8").trim()
+  const actual = spawnSync(
+    "node",
+    ["src/cli.mjs", "--pattern", "/sk-[a-z0-9]{20,}/"],
+    { input },
+  )
+    .stdout.toString("utf8")
+    .trim()
 
   const expected = "DEEPSEEK_API_KEY=███████████████████████████████████"
   assert.strictEqual(actual, expected)
@@ -100,9 +107,11 @@ test(`custom patterns`, () => {
 test(`custom patterns`, () => {
   const input = `DEEPSEEK_API_KEY=sk-af75149812524eb08eb302bf9604c8e8`
 
-  const actual = execSync(
-    `echo ${input} | node src/cli.mjs --pattern '/([0-9]{2,})/'`,
-  ).toString("utf8").trim()
+  const actual = spawnSync(
+    "node",
+    ["src/cli.mjs", "--pattern", "/([0-9]{2,})/"],
+    { input },
+  ).stdout.toString("utf8")
 
   const expected = "DEEPSEEK_API_KEY=sk-af███████████eb██eb███bf████c8e8"
   assert.strictEqual(actual, expected)
