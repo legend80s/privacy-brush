@@ -289,10 +289,9 @@ MIT License © 2024 PrivacyBrush Contributors
 
 ## 📞 Support
 
-- 📧 Email: <support@privacy-brush.dev>
 - 🐛 [Issue Tracker](https://github.com/legend80s/privacy-brush/issues)
 - 💬 [Discussions](https://github.com/legend80s/privacy-brush/discussions)
-- 📖 [Documentation](https://privacy-brush.dev/docs)
+- 📖 [Documentation](https://github.com/legend80s/privacy-brush/)
 
 ---
 
@@ -300,3 +299,13 @@ MIT License © 2024 PrivacyBrush Contributors
   <strong>Share Safely, Start with PrivacyBrush</strong><br>
   <sub>Protect privacy, communicate with confidence</sub>
 </p>
+
+## Development
+
+```sh
+# mask stdin with custom patterns
+echo 'DEEPSEEK_API_KEY=sk-af75149812524eb08eb302bf9604c8e8' | node src/cli.mjs --pattern '/sk-[a-z0-9]{20，}/'
+
+echo '/c/Users/legend80s/AppData/ /Users/test/code/' | node src/cli.mjs --pattern '/Users/[a-z]{2，}/i'
+# /c/Users/█████████/AppData/  /Users/████/code/
+```
