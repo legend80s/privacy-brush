@@ -1,6 +1,9 @@
 <h1 align="center" title="PrivacyBrush">🛡️ Priv█cyBr█sh 🖌️</h1>
 
-> **Terminal Output Masking Tool | Safely Share Logs by Hiding Sensitive Information**
+<p align="center">
+  <strong>Share Safely, Start with PrivacyBrush</strong><br>
+  <sub>Protect privacy, communicate with confidence</sub>
+</p>
 
 [![npm version](https://img.shields.io/npm/v/privacy-brush.svg)](https://www.npmjs.com/package/privacy-brush)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -298,10 +301,7 @@ MIT License © 2024 PrivacyBrush Contributors
 
 ---
 
-<p align="center">
-  <strong>Share Safely, Start with PrivacyBrush</strong><br>
-  <sub>Protect privacy, communicate with confidence</sub>
-</p>
+> **Terminal Output Masking Tool | Safely Share Logs by Hiding Sensitive Information**
 
 ## Development
 
