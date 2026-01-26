@@ -17,7 +17,22 @@
     "postversion": "npm publish && git push origin HEAD && git push --tags",
     "publishd": "npm publish --dry-run"
   },
-  "keywords": [],
+  "keywords": [
+    "privacy",
+    "mask",
+    "masking",
+    "sensitive",
+    "guard",
+    "shield",
+    "safe",
+    "sharing",
+    "sanitize",
+    "obfuscate",
+    "blur",
+    "logs",
+    "terminal",
+    "security"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
