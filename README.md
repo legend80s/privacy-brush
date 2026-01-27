@@ -204,18 +204,26 @@ PrivacyBrush includes 20+ pre-configured sensitive information patterns:
 ### Stream Processing for Large Files
 
 ```javascript
-const fs = require('fs');
-const { createMaskStream } = require('privacy-brush');
+import { createReadStream, createWriteStream } from "node:fs"
+import { pipeline } from "node:stream/promises"
 
-const inputStream = fs.createReadStream('huge.log');
-const maskStream = createMaskStream();
+import { PrivacyBrush } from "privacy-brush"
 
-inputStream
-  .pipe(maskStream)
-  .pipe(fs.createWriteStream('masked-huge.log'))
-  .on('finish', () => {
-    console.log('Large file processing completed!');
-  });
+const brush = new PrivacyBrush()
+
+const inputStream = createReadStream("./test/fixtures/huge.log")
+const maskStream = await brush.createMaskStream()
+
+const dist = `./test/fixtures/masked-huge-${Date.now()}.generated.log`
+
+// biome-ignore format: one stream per line
+await pipeline(
+  inputStream,
+  maskStream,
+  createWriteStream(dist)
+)
+
+console.log("✅ Large file processing completed!", dist)
 ```
 
 ### Express.js Integration
