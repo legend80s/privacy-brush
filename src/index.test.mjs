@@ -7,10 +7,8 @@ const GOOGLE_BROWSER_VERSION_SAMPLE = "144.0.1234.56"
 const EDGE_BROWSER_VERSION_SAMPLE = "144.0.3421.12"
 
 test("default configurations", () => {
-  // 使用示例
   const masker = new PrivacyBrush()
 
-  // 处理终端输出
   const terminalOutput = `❯ flutter devices
 Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
 Found 4 connected devices:
@@ -49,13 +47,11 @@ troubleshooting tips.
 })
 
 test("use custom maskChar and not preserveFirstPart", () => {
-  // 使用示例
   const masker = new PrivacyBrush({
     maskChar: "░",
     preserveFirstPart: false,
   })
 
-  // 处理终端输出
   const terminalOutput = `❯ flutter devices
 Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
 Found 4 connected devices:
@@ -94,12 +90,10 @@ troubleshooting tips.
 })
 
 test("only mask browser_version", () => {
-  // 使用示例
   const masker = new PrivacyBrush({
     maskPatternNames: ["browser_version"],
   })
 
-  // 处理终端输出
   const terminalOutput = `❯ flutter devices
 Flutter assets will be downloaded from https://storage.flutter-io.cn. Make sure you trust this source!
 Found 4 connected devices:
@@ -138,26 +132,18 @@ troubleshooting tips.
 })
 
 test("mask username in path", () => {
-  // 使用示例
   const masker = new PrivacyBrush()
 
-  // 处理终端输出
   const input = `/c/Users/legend80s/AppData/  /Users/test/code/`
-
   const safeOutput = masker.maskText(input)
-
-  // console.log("safeOutput3:", safeOutput)
-
   const expectedOutput = `/c/Users/█████████/AppData/  /Users/████/code/`
 
   assert.strictEqual(safeOutput, expectedOutput)
 })
 
 test("mask IP", () => {
-  // 使用示例
   const masker = new PrivacyBrush()
 
-  // 处理终端输出
   const terminalOutput = `Windows [Version 10.0.12345.1234]
 Chrome 144.0.1234.12
 User IP: 10.12.123.12`
@@ -174,10 +160,8 @@ User IP: 10.██.███.██`
 })
 
 test("mask uuid", () => {
-  // 使用示例
   const masker = new PrivacyBrush()
 
-  // 处理终端输出
   const terminalOutput = `
 UUID v1: 11111111-1111-1111-8111-111111111111
 UUID v2: 22222222-2222-2222-8222-222222222222
@@ -202,10 +186,8 @@ UUID v5: ████████-████-5███-████-███
 })
 
 test("mask mac address", () => {
-  // 使用示例
   const masker = new PrivacyBrush()
 
-  // 处理终端输出
   const input = `
 CA:FE:BA:BE:12:34  # "Cafe Babe"
 DE:AD:BE:EF:CA:FE  # "Dead Beef Cafe"
