@@ -137,6 +137,22 @@ troubleshooting tips.
   assert.strictEqual(safeOutput, expectedOutput)
 })
 
+test("mask username in path", () => {
+  // 使用示例
+  const masker = new PrivacyBrush()
+
+  // 处理终端输出
+  const input = `/c/Users/legend80s/AppData/  /Users/test/code/`
+
+  const safeOutput = masker.maskText(input)
+
+  // console.log("safeOutput3:", safeOutput)
+
+  const expectedOutput = `/c/Users/█████████/AppData/  /Users/████/code/`
+
+  assert.strictEqual(safeOutput, expectedOutput)
+})
+
 test("mask IP", () => {
   // 使用示例
   const masker = new PrivacyBrush()
