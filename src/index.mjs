@@ -2,6 +2,7 @@
 
 import { createRequire } from "node:module"
 import { defaultConfig } from "./lib/config.mjs"
+import { tryDecode } from "./lib/iconv-lite.mjs"
 import { verbose } from "./lib/parse-args.mjs"
 
 export class PrivacyBrush {
@@ -299,14 +300,12 @@ export class PrivacyBrush {
   // 实时流处理
   async createMaskStream() {
     const { Transform } = await import("node:stream")
-    // let count = 0
 
     return new Transform({
-      transform: (chunk, encoding, callback) => {
-        const text = chunk.toString("utf8")
-        // console.log(`chunk${++count}:`, { chunk, text })
-
+      transform: (/** @type {Buffer} */ chunk, encoding, callback) => {
+        const text = tryDecode(chunk)
         const masked = this.maskText(text)
+
         callback(null, masked)
       },
     })
