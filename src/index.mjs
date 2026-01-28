@@ -73,7 +73,7 @@ export class PrivacyBrush {
       {
         /** @type {IPatternName} */
         name: "user_name_in_path",
-        regex: /\/Users\/([^\/]+)\//g,
+        regex: /\/Users\/([^/]+)\//g,
         /**
          * Handle user name in file path masking.
          * @param {string} match
@@ -97,6 +97,17 @@ export class PrivacyBrush {
          */
         replacer: match => {
           return this.maskUUID(match)
+        },
+      },
+
+      // mac address (CA:FE:BA:BE:12:34 or CA-FE-BA-BE-12-34)
+      {
+        name: "mac_address",
+        // match six hex pairs separated by ':' or '-'
+        regex:
+          /\b(?:[0-9A-Fa-f]{2}([:-]))(?:[0-9A-Fa-f]{2}\1){4}[0-9A-Fa-f]{2}\b/g,
+        replacer: match => {
+          return match.replace(/[0-9A-Fa-f]{2}/g, () => this.maskChar.repeat(2))
         },
       },
     ]

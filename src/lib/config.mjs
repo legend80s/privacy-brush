@@ -8,6 +8,7 @@ export const defaultConfig = {
     "windows_version",
     "browser_version",
     "ip_address",
+    "mac_address",
     "user_name_in_path",
     "uuid",
   ],
