@@ -184,3 +184,35 @@ UUID v5: ████████-████-5███-████-███
 
   assert.strictEqual(safeOutput, expectedOutput)
 })
+
+test("mask mac address", () => {
+  // 使用示例
+  const masker = new PrivacyBrush()
+
+  // 处理终端输出
+  const input = `
+CA:FE:BA:BE:12:34  # "Cafe Babe"
+DE:AD:BE:EF:CA:FE  # "Dead Beef Cafe"
+BA:DC:0F:FE:E0:0D  # "Bad Coffee Feed"
+
+CA-FE-BA-BE-12-34  # "Cafe Babe"
+DE-AD-BE-EF-CA-FE  # "Dead Beef Cafe"
+BA-DC-0F-FE-E0-0D  # "Bad Coffee Feed"
+`
+
+  const safeOutput = masker.maskText(input)
+
+  // console.log("safeOutput3:", safeOutput)
+
+  const expectedOutput = `
+██:██:██:██:██:██  # "Cafe Babe"
+██:██:██:██:██:██  # "Dead Beef Cafe"
+██:██:██:██:██:██  # "Bad Coffee Feed"
+
+██-██-██-██-██-██  # "Cafe Babe"
+██-██-██-██-██-██  # "Dead Beef Cafe"
+██-██-██-██-██-██  # "Bad Coffee Feed"
+`
+
+  assert.strictEqual(safeOutput, expectedOutput)
+})

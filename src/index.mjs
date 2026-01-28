@@ -288,10 +288,12 @@ export class PrivacyBrush {
   // 实时流处理
   async createMaskStream() {
     const { Transform } = await import("node:stream")
+    // let count = 0
 
     return new Transform({
       transform: (chunk, encoding, callback) => {
-        const text = String(chunk)
+        const text = chunk.toString("utf8")
+        // console.log(`chunk${++count}:`, { chunk, text })
 
         const masked = this.maskText(text)
         callback(null, masked)
