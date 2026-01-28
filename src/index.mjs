@@ -84,6 +84,21 @@ export class PrivacyBrush {
           return match.replace(userName, this.maskChar.repeat(userName.length))
         },
       },
+
+      // uuid
+      {
+        name: "uuid",
+        regex:
+          /\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b/g,
+        /**
+         * Handle UUID masking.
+         * @param {string} match
+         * @returns {string}
+         */
+        replacer: match => {
+          return this.maskUUID(match)
+        },
+      },
     ]
 
     return allPatterns
@@ -238,6 +253,36 @@ export class PrivacyBrush {
       )
       throw error
     }
+  }
+
+  /**
+   * mask uuid by version
+   * - version 4: 6ba7b810-xxxx-4xxx-xxxx-xxxxxxxxxxxx
+   * - other versions: xxxxxxxx-xxxx-vxxx-xxxx-xxxxxxxxxxxx (v is 1-5)
+   * @param {string} uuid
+   * @returns
+   */
+  maskUUID(uuid) {
+    return uuid.replace(
+      /\b([0-9a-fA-F]{8})-([0-9a-fA-F]{4})-([1-5])([0-9a-fA-F]{3})-([0-9a-fA-F]{4})-([0-9a-fA-F]{12})\b/g,
+      (match, p1, p2, p3, p4, p5, p6) => {
+        /** @type {(target: string) => string} */
+        const mask = target => this.maskChar.repeat(target.length)
+
+        const maskedP2 = mask(p2)
+        const maskedP4 = mask(p4)
+        const maskedP5 = mask(p5)
+        const maskedP6 = mask(p6)
+
+        if (p3 === "4") {
+          return `${p1}-${maskedP2}-4${maskedP4}-${maskedP5}-${maskedP6}`
+        }
+
+        const maskedP1 = mask(p1)
+
+        return `${maskedP1}-${maskedP2}-${p3}${maskedP4}-${maskedP5}-${maskedP6}`
+      },
+    )
   }
 
   // 实时流处理

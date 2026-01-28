@@ -9,6 +9,7 @@ export const defaultConfig = {
     "browser_version",
     "ip_address",
     "user_name_in_path",
+    "uuid",
   ],
   customPatterns: [],
 }

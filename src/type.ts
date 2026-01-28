@@ -10,6 +10,7 @@ export type IPatternName =
   | "browser_version"
   | "android_version"
   | "ip_address"
+  | "uuid"
   | (string & {})
 
 export type IPattern = {

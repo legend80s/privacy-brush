@@ -157,5 +157,30 @@ User IP: 10.██.███.██`
   assert.strictEqual(safeOutput, expectedOutput)
 })
 
-// // 处理日志文件
-// masker.maskFile('terminal_log.txt', 'masked_log.txt');
+test("mask uuid", () => {
+  // 使用示例
+  const masker = new PrivacyBrush()
+
+  // 处理终端输出
+  const terminalOutput = `
+UUID v1: 11111111-1111-1111-8111-111111111111
+UUID v2: 22222222-2222-2222-8222-222222222222
+UUID v3: 33333333-3333-3333-8333-333333333333
+UUID v4: 44444444-4444-4444-8444-444444444444
+UUID v5: 55555555-5555-5555-8555-555555555555
+`
+
+  const safeOutput = masker.maskText(terminalOutput)
+
+  // console.log("safeOutput3:", safeOutput)
+
+  const expectedOutput = `
+UUID v1: ████████-████-1███-████-████████████
+UUID v2: ████████-████-2███-████-████████████
+UUID v3: ████████-████-3███-████-████████████
+UUID v4: 44444444-████-4███-████-████████████
+UUID v5: ████████-████-5███-████-████████████
+`
+
+  assert.strictEqual(safeOutput, expectedOutput)
+})
