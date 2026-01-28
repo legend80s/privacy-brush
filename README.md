@@ -226,27 +226,6 @@ await pipeline(
 console.log("✅ Large file processing completed!", dist)
 ```
 
-### Express.js Integration
-
-```javascript
-const express = require('express');
-const { PrivacyBrush } = require('privacy-brush');
-const app = express();
-const masker = new PrivacyBrush();
-
-// Middleware: auto-mask sensitive info in responses
-app.use((req, res, next) => {
-  const originalSend = res.send;
-  res.send = function(body) {
-    if (typeof body === 'string' && body.includes('sensitive')) {
-      body = masker.mask(body);
-    }
-    originalSend.call(this, body);
-  };
-  next();
-});
-```
-
 ### Git Hook Integration
 
 ```bash
